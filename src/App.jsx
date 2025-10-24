@@ -632,7 +632,7 @@ function App() {
             padding: "0",
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
-            marginBottom: "15px",
+            marginBottom: "55px",
           }}
         >
           (Adds a daily task group)

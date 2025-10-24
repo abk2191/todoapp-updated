@@ -29,12 +29,12 @@
   --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   --add-task-bg: #4f46e5;
   --add-task-bg-light: #e0e7ff;
-  --task-row-bg: #4f46e5;
+  --task-row-bg: #1a1a1a; /*#4f46e5;*/
   --task-row-bg-light: #e0e7ff;
 }
 
 [data-theme="light"] {
-  --bg-primary: #ffffff;
+  --bg-primary: #ebf1fc;
   --bg-secondary: #f8fafc;
   --bg-tertiary: #f1f5f9;
   --bg-quaternary: #e2e8f0;
@@ -54,7 +54,7 @@
   --checkbox-bg: #f1f5f9;
   --checkbox-checked-bg: #6366f1;
   --dropdown-bg: #ffffff;
-  --navbar-bg: #ffffff;
+  --navbar-bg: #eaf1ff;
   --button-bg: #f1f5f9;
   --button-hover: #e2e8f0;
   --shadow-color: rgba(0, 0, 0, 0.1);
@@ -124,12 +124,11 @@ h6 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 140px; /* Reduced height */
+  height: 180px; /* Reduced height */
   width: 100%;
   background-color: var(--navbar-bg);
   padding: 20px;
-  margin-top: 20px;
-  gap: 16px;
+  gap: 10px;
   border-bottom: 1px solid var(--border-primary);
   box-shadow: 0 1px 3px var(--shadow-color);
 }
@@ -567,8 +566,8 @@ input[type="checkbox"]:checked {
   background: var(--bg-secondary);
   border: 2px solid var(--border-secondary);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 14px;
+  height: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -581,6 +580,7 @@ input[type="checkbox"]:checked {
   min-height: 44px;
   max-width: 44px;
   max-height: 44px;
+  margin-top: 60px;
 }
 
 /* FIXED: Time and Move Buttons on SAME LINE */
@@ -757,7 +757,7 @@ body {
 
   .addnewtaskgroupbutton {
     width: 160px;
-    height: 48px; /* Reduced height */
+    height: 8px; /* Reduced height */
     font-size: 1rem;
     border: 2px solid var(--accent-color) !important;
   }
@@ -840,7 +840,7 @@ body {
   }
 
   .addnewtaskgroupbutton {
-    height: 48px; /* Reduced height */
+    height: 8px; /* Reduced height */
     width: 140px;
     border: 2px solid var(--accent-color) !important;
   }
@@ -853,8 +853,8 @@ body {
   } */
 
   .theme-toggle {
-    width: 44px;
-    height: 44px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
   }
 
