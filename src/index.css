@@ -26,11 +26,14 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
   --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --elevated-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --gradient-primary: #2a2a2a;
   --add-task-bg: #4f46e5;
   --add-task-bg-light: #e0e7ff;
   --task-row-bg: #1a1a1a; /*#4f46e5;*/
   --task-row-bg-light: #e0e7ff;
+  --addbtn-color: inset 0 0.0625em 0 0 #3a3a3a, 0 0.0625em 0 0 #252525,
+    0 0.125em 0 0 #202020, 0 0.25em 0 0 #1c1c1c, 0 0.3125em 0 0 #181818,
+    0 0.375em 0 0 #141414, 0 0.425em 0 0 #101010, 0 0.425em 0.5em 0 #0a0a0a;
 }
 
 [data-theme="light"] {
@@ -58,9 +61,12 @@
   --button-bg: #f1f5f9;
   --button-hover: #e2e8f0;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --addbtn-color: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+    0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+    0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
   --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --elevated-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --gradient-primary: #f0f0f0;
   --add-task-bg: #e0e7ff;
   --add-task-bg-light: #e0e7ff;
   --task-row-bg: #e0e7ff;
@@ -349,24 +355,31 @@ h6 {
 }
 
 /* Buttons - ADD TASK GROUP BUTTON WITH BORDER */
+
+/* From Uiverse.io by mahiatlinux */
+/* Dark Mode 3D Button */
 .addnewtaskgroupbutton {
-  height: 48px; /* Reduced by 20% from 60px */
-  width: 160px; /* Reduced width */
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  background: var(--gradient-primary);
-  font-family: "Inter", sans-serif;
-  color: white;
+  font: inherit;
+  background-color: #2a2a2a;
+  border: 0;
+  color: #e0e0e0;
+  border-radius: 0.5em;
+  font-size: 1.35rem;
+  padding: 0.375em 1em;
   font-weight: 600;
-  font-size: 1rem; /* Normal font size */
-  box-shadow: 0 2px 4px var(--shadow-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 16px;
+  text-shadow: 0 0.0625em 0 #000;
+  box-shadow: inset 0 0.0625em 0 0 #3a3a3a, 0 0.0625em 0 0 #252525,
+    0 0.125em 0 0 #202020, 0 0.25em 0 0 #1c1c1c, 0 0.3125em 0 0 #181818,
+    0 0.375em 0 0 #141414, 0 0.425em 0 0 #101010, 0 0.425em 0.5em 0 #0a0a0a;
+  transition: 0.15s ease;
+  cursor: pointer;
+}
+
+.addnewtaskgroupbutton:active {
+  translate: 0 0.225em;
+  box-shadow: inset 0 0.03em 0 0 #3a3a3a, 0 0.03em 0 0 #252525,
+    0 0.0625em 0 0 #202020, 0 0.125em 0 0 #1c1c1c, 0 0.125em 0 0 #181818,
+    0 0.2em 0 0 #141414, 0 0.225em 0 0 #101010, 0 0.225em 0.375em 0 #0a0a0a;
 }
 
 .createnewlistbtn,
@@ -756,10 +769,8 @@ body {
   }
 
   .addnewtaskgroupbutton {
-    width: 160px;
-    height: 8px; /* Reduced height */
-    font-size: 1rem;
-    border: 2px solid var(--accent-color) !important;
+    width: 100px;
+    height: 70px; /* Reduced height */
   }
 
   .task-container-2 {
@@ -840,9 +851,8 @@ body {
   }
 
   .addnewtaskgroupbutton {
-    height: 8px; /* Reduced height */
-    width: 140px;
-    border: 2px solid var(--accent-color) !important;
+    width: 100px;
+    height: 70px; /* Reduced height */
   }
 
   /* .duedatediv {
