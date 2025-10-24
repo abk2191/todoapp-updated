@@ -88,6 +88,7 @@ const useIsMobile = () => {
 const formatDisplayDate = (dateString) => {
   try {
     const [day, month, year] = dateString.split("/").map(Number);
+
     const monthNames = [
       "Jan",
       "Feb",
@@ -104,8 +105,9 @@ const formatDisplayDate = (dateString) => {
     ];
 
     if (month >= 1 && month <= 12) {
-      return `${day}/${monthNames[month - 1]}/${year}`;
+      return `${day}/${monthNames[month - 1].toUpperCase()}/${year}`;
     }
+
     return dateString;
   } catch (error) {
     return dateString;
