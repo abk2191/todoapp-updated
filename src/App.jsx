@@ -85,6 +85,33 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+const formatDisplayDate = (dateString) => {
+  try {
+    const [day, month, year] = dateString.split("/").map(Number);
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    if (month >= 1 && month <= 12) {
+      return `${day}/${monthNames[month - 1]}/${year}`;
+    }
+    return dateString;
+  } catch (error) {
+    return dateString;
+  }
+};
+
 function App() {
   const taskGroupContainerRef = useRef(null);
   const isEditingRef = useRef(false);
@@ -655,7 +682,7 @@ function App() {
             <div key={datestring} className="taskgroupwrapper">
               <div className="taskgroup">
                 <div className="topoflistdiv">
-                  <h3>{datestring}</h3>
+                  <h3>{formatDisplayDate(datestring)}</h3>
 
                   <button
                     className="createnewlistbtn"
