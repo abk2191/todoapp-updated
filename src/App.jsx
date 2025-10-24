@@ -661,10 +661,11 @@ function App() {
             padding: "0",
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
+            marginTop: "25px",
             marginBottom: "55px",
           }}
         >
-          (Adds a daily task group)
+          Adds a daily task group
         </p>
       </div>
 
