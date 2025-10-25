@@ -763,49 +763,83 @@ function App() {
                 </div>
 
                 {/* TASK GROUP CAPTION AREA */}
-                <div className="task-group-caption-div">
-                  <p
-                    contentEditable
-                    suppressContentEditableWarning
-                    onFocus={(e) => {
-                      if (e.target.textContent === "Add task group caption") {
-                        e.target.textContent = "";
-                      }
-                    }}
-                    onBlur={(e) => {
-                      const newCaption = e.target.textContent.trim();
+<div className="task-group-caption-div">
+  <p
+    contentEditable
+    suppressContentEditableWarning
+    onFocus={(e) => {
+      if (e.target.textContent === "Add task group caption") {
+        e.target.textContent = "";
+      }
+    }}
+    onBlur={(e) => {
+      const newCaption = e.target.textContent.trim();
 
-                      // Update the task group caption
-                      updateTaskGroupCaption(datestring, newCaption);
+      // Update the task group caption
+      updateTaskGroupCaption(datestring, newCaption);
 
-                      // If empty, reset to placeholder text
-                      if (!newCaption) {
-                        e.target.textContent = "Add task group caption";
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        e.target.blur();
-                      }
-                    }}
-                    style={{
-                      color:
-                        editedTaskGroupCaptions[datestring] &&
-                        taskGroupCaptions[datestring] &&
-                        taskGroupCaptions[datestring] !== "Add task group caption"
-                          ? "skyblue"
-                          : "rgb(112, 111, 111)",
-                      textAlign: "center",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto",
-                    }}
-                  >
-                    {taskGroupCaptions[datestring] || "Add task group caption"}
-                  </p>
-                </div>
+      // If empty, reset to placeholder text
+      if (!newCaption) {
+        e.target.textContent = "Add task group caption";
+      }
+    }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.target.blur();
+      }
+    }}
+    onClick={(e) => {
+      // Force focus on click for mobile devices
+      e.target.focus();
+      
+      // For mobile: ensure proper cursor placement
+      if (window.getSelection && document.createRange) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(e.target);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }}
+    onTouchStart={(e) => {
+      // Prevent any default touch behavior that might interfere
+      e.preventDefault();
+      e.target.focus();
+      
+      // For mobile: ensure proper cursor placement
+      setTimeout(() => {
+        if (window.getSelection && document.createRange) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(e.target);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }, 100);
+    }}
+    style={{
+      color:
+        editedTaskGroupCaptions[datestring] &&
+        taskGroupCaptions[datestring] &&
+        taskGroupCaptions[datestring] !== "Add task group caption"
+          ? "skyblue"
+          : "rgb(112, 111, 111)",
+      textAlign: "center",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      margin: "0 auto",
+      WebkitUserSelect: "text",
+      userSelect: "text",
+      WebkitTapHighlightColor: "transparent",
+      minHeight: "20px",
+      minWidth: "200px",
+    }}
+  >
+    {taskGroupCaptions[datestring] || "Add task group caption"}
+  </p>
+</div>
 
                 {/* Display total incomplete tasks for the task group */}
                 {totalIncomplete > 0 && (
