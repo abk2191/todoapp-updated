@@ -171,6 +171,12 @@ function App() {
   const [editedCaptions, setEditedCaptions] = useState(() =>
     loadFromStorage("editedCaptions", {})
   );
+  const [taskCaptions, setTaskCaptions] = useState(() =>
+    loadFromStorage("taskCaptions", {})
+  );
+  const [editedTaskCaptions, setEditedTaskCaptions] = useState(() =>
+    loadFromStorage("editedTaskCaptions", {})
+  );
 
   // Save ALL data whenever ANY state changes
   useEffect(() => {
@@ -183,6 +189,8 @@ function App() {
     saveToStorage("tasksExpandedStates", tasksExpandedStates);
     saveToStorage("listCaptions", listCaptions);
     saveToStorage("editedCaptions", editedCaptions);
+    saveToStorage("taskCaptions", taskCaptions);
+    saveToStorage("editedTaskCaptions", editedTaskCaptions);
   }, [
     newTaskGroup,
     taskLists,
@@ -193,6 +201,8 @@ function App() {
     tasksExpandedStates,
     listCaptions,
     editedCaptions,
+    taskCaptions,
+    editedTaskCaptions,
   ]);
 
   // Calculate incomplete tasks whenever tasks change
@@ -295,6 +305,18 @@ function App() {
     setListCaptions((prev) => {
       const updated = { ...prev };
       listIds.forEach((id) => delete updated[id]);
+      return updated;
+    });
+
+    // Remove task captions for tasks in this task group
+    setTaskCaptions((prev) => {
+      const updated = { ...prev };
+      listIds.forEach((listId) => {
+        const taskIds = tasks[listId]?.map((task) => task.id) || [];
+        taskIds.forEach((taskId) => {
+          delete updated[taskId];
+        });
+      });
       return updated;
     });
 
@@ -406,6 +428,19 @@ function App() {
           [listId]: Math.max(0, (prevCounts[listId] || 0) - 1),
         }));
       }
+
+      // Remove task caption
+    setTaskCaptions((prev) => {
+      const updated = { ...prev };
+      delete updated[taskId];
+      return updated;
+    });
+
+    setEditedTaskCaptions((prev) => {
+      const updated = { ...prev };
+      delete updated[taskId];
+      return updated;
+    });
 
       // Check if the list is now empty and delete it if so
       if (updatedTasks[listId].length === 0) {
@@ -523,6 +558,34 @@ function App() {
     }));
   }
 
+  function updateTaskCaption(taskId, newCaption) {
+    // If caption is empty, remove it from storage and mark as not edited
+    if (!newCaption.trim()) {
+      setTaskCaptions((prev) => {
+        const updated = { ...prev };
+        delete updated[taskId];
+        return updated;
+      });
+
+      setEditedTaskCaptions((prev) => ({
+        ...prev,
+        [taskId]: false,
+      }));
+    } else {
+      // Only update if we have a non-empty caption
+      setTaskCaptions((prev) => ({
+        ...prev,
+        [taskId]: newCaption,
+      }));
+
+      // Mark this caption as edited
+      setEditedTaskCaptions((prev) => ({
+        ...prev,
+        [taskId]: true,
+      }));
+    }
+  }
+
   function toggleCategories(listId) {
     setOpenCategories((prev) => (prev === listId ? null : listId));
   }
@@ -634,6 +697,7 @@ function App() {
     localStorage.removeItem("tasks");
     localStorage.removeItem("listCategories");
     localStorage.removeItem("listCaptions");
+    localStorage.removeItem("taskCaptions");
     localStorage.removeItem("incompleteCounts");
     localStorage.removeItem("expandedStates");
     localStorage.removeItem("tasksExpandedStates");
@@ -642,6 +706,7 @@ function App() {
     setTasks({});
     setListCategories({});
     setListCaptions({});
+    setTaskCaptions({});
     setIncompleteCounts({});
     setExpandedStates({});
     setTasksExpandedStates({});
@@ -791,6 +856,7 @@ function App() {
                         </button>
                       </div>
 
+                      {/* LIST CAPTION AREA */}
                       <div className="captionsdiv">
                         <p
                           contentEditable
@@ -824,6 +890,11 @@ function App() {
                               listCaptions[list.id] !== "Add caption"
                                 ? "skyblue"
                                 : "rgb(112, 111, 111)",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            margin: "0 auto",
                           }}
                         >
                           {listCaptions[list.id] || "Add caption"}
@@ -918,6 +989,53 @@ function App() {
                     >
                       {tasks[list.id]?.map((task) => (
                         <div key={task.id} className="task-wrapper">
+                          {/* TASK CAPTION AREA */}
+                          <div className="task-caption-div">
+                            <p
+                              contentEditable
+                              suppressContentEditableWarning
+                              onFocus={(e) => {
+                                if (e.target.textContent === "Add task caption") {
+                                  e.target.textContent = "";
+                                }
+                              }}
+                              onBlur={(e) => {
+                                const newCaption = e.target.textContent.trim();
+
+                                // Update the task caption
+                                updateTaskCaption(task.id, newCaption);
+
+                                // If empty, reset to placeholder text
+                                if (!newCaption) {
+                                  e.target.textContent = "Add task caption";
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault();
+                                  e.target.blur();
+                                }
+                              }}
+                              style={{
+                                color:
+                                  editedTaskCaptions[task.id] &&
+                                  taskCaptions[task.id] &&
+                                  taskCaptions[task.id] !== "Add task caption"
+                                    ? "skyblue"
+                                    : "rgb(112, 111, 111)",
+                                textAlign: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                margin: "0 auto",
+                                fontSize: "12px",
+                                padding: "4px 8px",
+                              }}
+                            >
+                              {taskCaptions[task.id] || "Add task caption"}
+                            </p>
+                          </div>
+
                           <Task
                             task={task}
                             onDelete={() => deleteTask(list.id, task.id)}
