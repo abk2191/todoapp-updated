@@ -684,6 +684,54 @@ input[type="checkbox"]:checked {
   min-width: 80px;
 }
 
+/* Task Group Caption */
+.task-group-caption-div {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-group-caption-div p {
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  min-height: 20px;
+  outline: none;
+  cursor: text;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.task-group-caption-div p:focus {
+  background-color: var(--bg-quaternary);
+  color: var(--accent-color);
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+/* Ensure contenteditable elements work properly on mobile */
+[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default !important;
+}
+
+/* Override the global * selector for contenteditable elements */
+*[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default !important;
+}
+
 /* Calendar and Due Date - NEW LAYOUT for buttons and time */
 /* .calendar-and-duedate {
   position: relative;
