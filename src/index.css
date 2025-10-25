@@ -574,6 +574,35 @@ input[type="checkbox"]:checked {
   color: var(--accent-color);
 }
 
+/* Task Caption */
+.task-caption-div {
+  width: 100%;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-caption-div p {
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  min-height: 16px;
+  outline: none;
+  cursor: text;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.task-caption-div p:focus {
+  background-color: var(--bg-quaternary);
+  color: var(--accent-color);
+}
+
 /* Theme Toggle - PERFECTLY ROUND */
 .theme-toggle {
   background: var(--bg-secondary);
