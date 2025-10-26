@@ -34,9 +34,11 @@
   --addbtn-color: inset 0 0.0625em 0 0 #3a3a3a, 0 0.0625em 0 0 #252525,
     0 0.125em 0 0 #202020, 0 0.25em 0 0 #1c1c1c, 0 0.3125em 0 0 #181818,
     0 0.375em 0 0 #141414, 0 0.425em 0 0 #101010, 0 0.425em 0.5em 0 #0a0a0a;
+  --new-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* White shadow */
 }
 
 [data-theme="light"] {
+  --new-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Black shadow */
   --bg-primary: #ebf1fc;
   --bg-secondary: #f8fafc;
   --bg-tertiary: #f1f5f9;
@@ -289,13 +291,29 @@ h6 {
   color: var(--text-primary);
   border-radius: 12px;
   z-index: 999999 !important;
-  margin-top: -70px;
+  margin-top: -60px;
   margin-left: 280px;
   transform: translateX(-50%); /* Center adjustment */
   position: absolute;
   padding: 8px;
-  box-shadow: var(--elevated-shadow);
+  box-shadow: var(--new-shadow, 0 0 10px red);
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
   backdrop-filter: blur(10px);
+}
+
+.dropdowndiv::before {
+  content: "";
+  position: absolute;
+  top: -10px; /* Position above the dropdown */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--dropdown-bg); /* Same as dropdown background */
+  z-index: 1000000;
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
 }
 
 .dropdowndiv p {
@@ -574,6 +592,35 @@ input[type="checkbox"]:checked {
   color: var(--accent-color);
 }
 
+/* Task Caption */
+.task-caption-div {
+  width: 100%;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-caption-div p {
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  min-height: 16px;
+  outline: none;
+  cursor: text;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.task-caption-div p:focus {
+  background-color: var(--bg-quaternary);
+  color: var(--accent-color);
+}
+
 /* Theme Toggle - PERFECTLY ROUND */
 .theme-toggle {
   background: var(--bg-secondary);
@@ -653,6 +700,54 @@ input[type="checkbox"]:checked {
   align-items: center;
   justify-content: flex-end;
   min-width: 80px;
+}
+
+/* Task Group Caption */
+.task-group-caption-div {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-group-caption-div p {
+  color: var(--add-task-bg);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  min-height: 20px;
+  outline: none;
+  cursor: text;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.task-group-caption-div p:focus {
+  background-color: var(--bg-quaternary);
+  color: var(--accent-color);
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+/* Ensure contenteditable elements work properly on mobile */
+[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default !important;
+}
+
+/* Override the global * selector for contenteditable elements */
+*[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default !important;
 }
 
 /* Calendar and Due Date - NEW LAYOUT for buttons and time */

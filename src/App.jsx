@@ -171,6 +171,12 @@ function App() {
   const [editedCaptions, setEditedCaptions] = useState(() =>
     loadFromStorage("editedCaptions", {})
   );
+  const [taskGroupCaptions, setTaskGroupCaptions] = useState(() =>
+    loadFromStorage("taskGroupCaptions", {})
+  );
+  const [editedTaskGroupCaptions, setEditedTaskGroupCaptions] = useState(() =>
+    loadFromStorage("editedTaskGroupCaptions", {})
+  );
 
   // Save ALL data whenever ANY state changes
   useEffect(() => {
@@ -183,6 +189,8 @@ function App() {
     saveToStorage("tasksExpandedStates", tasksExpandedStates);
     saveToStorage("listCaptions", listCaptions);
     saveToStorage("editedCaptions", editedCaptions);
+    saveToStorage("taskGroupCaptions", taskGroupCaptions);
+    saveToStorage("editedTaskGroupCaptions", editedTaskGroupCaptions);
   }, [
     newTaskGroup,
     taskLists,
@@ -193,6 +201,8 @@ function App() {
     tasksExpandedStates,
     listCaptions,
     editedCaptions,
+    taskGroupCaptions,
+    editedTaskGroupCaptions,
   ]);
 
   // Calculate incomplete tasks whenever tasks change
@@ -295,6 +305,13 @@ function App() {
     setListCaptions((prev) => {
       const updated = { ...prev };
       listIds.forEach((id) => delete updated[id]);
+      return updated;
+    });
+
+    // Remove task group caption
+    setTaskGroupCaptions((prev) => {
+      const updated = { ...prev };
+      delete updated[datestring];
       return updated;
     });
 
@@ -563,6 +580,34 @@ function App() {
     }
   }
 
+  function updateTaskGroupCaption(datestring, newCaption) {
+    // If caption is empty, remove it from storage and mark as not edited
+    if (!newCaption.trim()) {
+      setTaskGroupCaptions((prev) => {
+        const updated = { ...prev };
+        delete updated[datestring];
+        return updated;
+      });
+
+      setEditedTaskGroupCaptions((prev) => ({
+        ...prev,
+        [datestring]: false,
+      }));
+    } else {
+      // Only update if we have a non-empty caption
+      setTaskGroupCaptions((prev) => ({
+        ...prev,
+        [datestring]: newCaption,
+      }));
+
+      // Mark this caption as edited
+      setEditedTaskGroupCaptions((prev) => ({
+        ...prev,
+        [datestring]: true,
+      }));
+    }
+  }
+
   // Toggle expand/collapse for all lists in a task group
   const toggleExpandCollapse = (datestring) => {
     const listIds = taskLists[datestring]?.map((list) => list.id) || [];
@@ -634,6 +679,7 @@ function App() {
     localStorage.removeItem("tasks");
     localStorage.removeItem("listCategories");
     localStorage.removeItem("listCaptions");
+    localStorage.removeItem("taskGroupCaptions");
     localStorage.removeItem("incompleteCounts");
     localStorage.removeItem("expandedStates");
     localStorage.removeItem("tasksExpandedStates");
@@ -642,6 +688,7 @@ function App() {
     setTasks({});
     setListCategories({});
     setListCaptions({});
+    setTaskGroupCaptions({});
     setIncompleteCounts({});
     setExpandedStates({});
     setTasksExpandedStates({});
@@ -713,6 +760,86 @@ function App() {
                       <i className="fa-solid fa-circle-chevron-down"></i>
                     )}
                   </button>
+                </div>
+
+                {/* TASK GROUP CAPTION AREA */}
+                <div className="task-group-caption-div">
+                  <p
+                    contentEditable
+                    suppressContentEditableWarning
+                    onFocus={(e) => {
+                      if (e.target.textContent === "Add task group caption") {
+                        e.target.textContent = "";
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const newCaption = e.target.textContent.trim();
+
+                      // Update the task group caption
+                      updateTaskGroupCaption(datestring, newCaption);
+
+                      // If empty, reset to placeholder text
+                      if (!newCaption) {
+                        e.target.textContent = "Add task group caption";
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        e.target.blur();
+                      }
+                    }}
+                    onClick={(e) => {
+                      // Force focus on click for mobile devices
+                      e.target.focus();
+
+                      // For mobile: ensure proper cursor placement
+                      if (window.getSelection && document.createRange) {
+                        const selection = window.getSelection();
+                        const range = document.createRange();
+                        range.selectNodeContents(e.target);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                      }
+                    }}
+                    onTouchStart={(e) => {
+                      // Prevent any default touch behavior that might interfere
+                      e.preventDefault();
+                      e.target.focus();
+
+                      // For mobile: ensure proper cursor placement
+                      setTimeout(() => {
+                        if (window.getSelection && document.createRange) {
+                          const selection = window.getSelection();
+                          const range = document.createRange();
+                          range.selectNodeContents(e.target);
+                          selection.removeAllRanges();
+                          selection.addRange(range);
+                        }
+                      }, 100);
+                    }}
+                    style={{
+                      color:
+                        editedTaskGroupCaptions[datestring] &&
+                        taskGroupCaptions[datestring] &&
+                        taskGroupCaptions[datestring] !==
+                          "Add task group caption"
+                          ? "#4f46e5"
+                          : "rgb(112, 111, 111)",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto",
+                      WebkitUserSelect: "text",
+                      userSelect: "text",
+                      WebkitTapHighlightColor: "transparent",
+                      minHeight: "20px",
+                      minWidth: "200px",
+                    }}
+                  >
+                    {taskGroupCaptions[datestring] || "Add task group caption"}
+                  </p>
                 </div>
 
                 {/* Display total incomplete tasks for the task group */}
@@ -791,6 +918,7 @@ function App() {
                         </button>
                       </div>
 
+                      {/* LIST CAPTION AREA - KEPT AS BEFORE */}
                       <div className="captionsdiv">
                         <p
                           contentEditable
@@ -822,8 +950,13 @@ function App() {
                               editedCaptions[list.id] &&
                               listCaptions[list.id] &&
                               listCaptions[list.id] !== "Add caption"
-                                ? "skyblue"
+                                ? "#4f46e5"
                                 : "rgb(112, 111, 111)",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            margin: "0 auto",
                           }}
                         >
                           {listCaptions[list.id] || "Add caption"}
