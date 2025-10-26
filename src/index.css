@@ -838,7 +838,7 @@ body {
   }
 
   .dropdowndiv {
-    margin-left: 140px;
+    margin-left: 120px;
   }
 
   .calendar-and-duedate {
@@ -963,12 +963,9 @@ body {
     border-radius: 50%;
   }
 
-  /* .dropdowndiv {
-    margin-top: 200px;
-    margin-left: 10px;
-    z-index: 1000 !important; 
-    position: absolute;
-  } */
+  .dropdowndiv {
+    margin-left: 120px;
+  }
 
   .addtaskbtn {
     background-color: var(--add-task-bg) !important;
