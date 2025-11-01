@@ -602,7 +602,7 @@ input[type="checkbox"]:checked {
 }
 
 .task-caption-div p {
-  color: var(--text-muted);
+  color: white;
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
@@ -712,7 +712,7 @@ input[type="checkbox"]:checked {
 }
 
 .task-group-caption-div p {
-  color: var(--add-task-bg);
+  color: white;
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 0.875rem;
